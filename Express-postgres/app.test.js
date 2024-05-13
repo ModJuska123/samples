@@ -1,15 +1,21 @@
-const request = require('supertest');
-const app = require('./app');
+const request = require("supertest");
+const app = require("./app");
 
-describe('GET /transactiondb', () => {
-  it('responds with JSON message', async () => {
-    const response = await request(app).get('/transactiondb');
+describe("GET /transactiondb", () => {
+  it("responds with JSON message", async () => {
+    const response = await request(app).get("/transactiondb");
     expect(response.statusCode).toBe(200);
-//     expect(response.headers['content-type']).toEqual(expect.stringContaining('application/json'));
-//   });
+    expect(response.body.length).toEqual(3);
+  });
+});
+describe("POST /transactiondb", () => {
+  it("responds with JSON message and creates a user", async () => {
+    const userData = { name: "John Doe", email: "john@example.com" };
+    const response = await request(app).post("/transactiondb").send(userData);
 
-//   it('responds with correct message', async () => {
-//     const response = await request(app).get('/api');
-//     expect(response.body.message).toBe('Hello, world!');
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toEqual({
+      name: userData.name,
+    });
   });
 });
